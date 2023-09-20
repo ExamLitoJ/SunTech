@@ -1,0 +1,13 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet",
+    "CosmosDBConfigurationOptions:CosmosDbEndpoint": "https://meditice-cosmosdb-no-sql.documents.azure.com:443/",
+    "CosmosDBConfigurationOptions:CosmosDbKey": "f9YFc2Dk9atOcQXl222RF8nwi1fA5KynJKKQxElrs0L91dFwLys90ysqKZQjtkV6f6cpF5ncmau0ACDb1qX27w==",
+    "CosmosDBConfigurationOptions:CosmosDbDatabaseId": "Meditice",
+    "CosmosDBConfigurationOptions:CosmosDbContainerId": "Customer",
+    "EventGridOptions:TopicAccessKey": "HGmvW0Zk9KYhRWCyw039qYKPL57R4IYS1HZjHHiZSMk=",
+    "EventGridOptions:TopicEndpoint": "https://meditice-booking-event-grid-topic.uksouth-1.eventgrid.azure.net/api/events"
+  }
+}
