@@ -1,9 +1,9 @@
 ﻿using Newtonsoft.Json;
 using System;
 
-namespace SunTech.Customer.FuncApp;
+namespace SunTech.Customer.FuncApp.Models;
 
-internal class Customer
+internal class CustomerModel
 {
     [JsonProperty(PropertyName = "id")]
     public string Id { get; set; }
@@ -25,19 +25,4 @@ internal class Customer
 
     [JsonProperty(PropertyName = "BirthdayInEpoch")]
     public string BirthdayInEpoch { get; set; }
-
-    public DateTime ConvertBirthdayEpochToDate()
-    {
-        double timestamp = Convert.ToInt32(BirthdayInEpoch);
-        DateTime start = new DateTime(1970, 1, 1, 0, 0, 0, 0); //from start epoch time
-        return start.AddSeconds(timestamp);
-    }
-
-    public string ConvertBirthdayToEpoch()
-    {
-        TimeSpan t = Birthday - new DateTime(1970, 1, 1);
-        return ((int)t.TotalSeconds).ToString();
-    }
-
-    public string CreatePartitionKey() => Guid.NewGuid().ToString();
 }

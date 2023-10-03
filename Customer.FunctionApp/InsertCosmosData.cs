@@ -5,11 +5,11 @@
 //using Microsoft.Azure.WebJobs.Extensions.Http;
 //using Microsoft.Extensions.Logging;
 //using Newtonsoft.Json;
-//using SunTech.Customer.FuncApp.Requests;
+//using SunTech.CustomerModel.FuncApp.Requests;
 //using System.IO;
 //using System.Threading.Tasks;
 
-//namespace SunTech.Customer.FuncApp;
+//namespace SunTech.CustomerModel.FuncApp;
 
 //public static class InsertCosmosData
 //{

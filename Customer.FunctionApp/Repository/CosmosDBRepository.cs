@@ -1,5 +1,7 @@
 ﻿using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Options;
+using SunTech.Customer.FuncApp.Helpers;
+using SunTech.Customer.FuncApp.Models;
 using SunTech.Customer.FuncApp.Options;
 using SunTech.Customer.FuncApp.Requests;
 using SunTech.Customer.FuncApp.Response;
@@ -32,29 +34,29 @@ internal class CosmosDBRepository : ICosmosDBReposity
     }
     /// <CustomerInsertRecordAsync>
     /// <summary>
-    /// Add Customer item to the container
+    /// Add CustomerModel item to the container
     /// </summary>
     public async Task<CommandResponse> CustomerInsertRecordAsync(CustomerInsertRequest insertRequest)
     {
         var commandResponse = new CommandResponse();
         try
         {
-            Random random = new Random(10);
-            Customer customer = new()
+
+            CustomerModel customer = new()
             {
                 FirstName = insertRequest.FirstName,
                 LastName = insertRequest.LastName,
                 Birthday = insertRequest.Birthday,
                 Email = insertRequest.Email,
-                Id = random.Next().ToString()
+                PartitionKey = CustomerHelper.CreatePartitionKey(),
+                Id = CustomerHelper.CreateId()
             };
-            customer.PartitionKey = customer.CreatePartitionKey();
             customer.BirthdayInEpoch = customer.ConvertBirthdayToEpoch();
 
             await CreateDatabaseAsync();
             await ScaleContainerAsync();
-            ItemResponse<Customer> bookingResponse = await this.container.CreateItemAsync<Customer>(customer, new PartitionKey(customer.PartitionKey));
-            commandResponse.Message = $"Successfuly inserted new record. To update use this partition Key {customer.PartitionKey}.";
+            ItemResponse<CustomerModel> bookingResponse = await this.container.CreateItemAsync<CustomerModel>(customer, new PartitionKey(customer.PartitionKey));
+            commandResponse.Message = $"Successfuly inserted new record. To update use this partition Key {customer.PartitionKey}. Id is {customer.Id}";
             commandResponse.IsSuccess = true;
         }
         catch (Exception ex)
@@ -67,14 +69,14 @@ internal class CosmosDBRepository : ICosmosDBReposity
 
     /// <CustomerUpdateRecordAsync>
     /// <summary>
-    /// Add Customer item to the container
+    /// Add CustomerModel item to the container
     /// </summary>
     public async Task<CommandResponse> UpdateRecordAsync(CustomerUpdateRequest updateRequest)
     {
         var commandResponse = new CommandResponse();
         try
         {
-            Customer customer = new()
+            CustomerModel customer = new()
             {
                 FirstName = updateRequest.FirstName,
                 LastName = updateRequest.LastName,
@@ -86,8 +88,8 @@ internal class CosmosDBRepository : ICosmosDBReposity
             customer.BirthdayInEpoch = customer.ConvertBirthdayToEpoch();
 
             await CreateDatabaseAsync();
-            ItemResponse<Customer> bookingResponse = await container.ReadItemAsync<Customer>(customer.Id, new PartitionKey(customer.PartitionKey));
-            await container.UpsertItemAsync<Customer>(customer);
+            ItemResponse<CustomerModel> bookingResponse = await container.ReadItemAsync<CustomerModel>(customer.Id, new PartitionKey(customer.PartitionKey));
+            await container.UpsertItemAsync<CustomerModel>(customer);
             commandResponse.Message = $"Successfuly updated record details for Partition Key : {customer.PartitionKey}.";
             commandResponse.IsSuccess = true;
         }
